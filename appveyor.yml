@@ -1,0 +1,115 @@
+version: 1.0.{build}
+image:
+- Ubuntu
+- macos
+- Visual Studio 2019
+- Ubuntu1804
+- Visual Studio 2017
+platform: x64
+configuration: Release
+skip_tags: true
+for:
+  -
+    matrix:
+      only:
+        - image: Ubuntu
+    install:
+    - sh: bash install-framerat.sh --no-build
+    build_script:
+    - sh: bash install-framerat.sh --ci
+    after_build:
+    - sh: mkdir libs && mv framerat/libframerat.a libs/ && rm -rfv examples/ && mkdir -p examples/res && cp -r res/* examples/res && cp -r bin/* examples/ && zip -r framerat-linux-rolling.zip libs/ include/ examples/
+    artifacts:
+      - path: framerat-linux-rolling.zip
+        name: libframerat-linux
+  -
+    matrix:
+      only:
+        - image: Ubuntu1804
+    install:
+    - sh: sudo apt-get update -y && sudo apt-get -y install git cmake make libncurses5-dev libncursesw5-dev gcc-8 g++-8 libxinerama-dev libxcursor-dev libxrandr-dev libx11-dev libxi-dev libegl1-mesa-dev && export CC=gcc-8 && export CXX=g++-8 && git submodule sync && git submodule update --init --recursive
+    build_script:
+    - sh: mkdir -p include/framerat && cmake CMakeLists.txt && make -j2
+  
+  -
+    matrix:
+      only:
+        - image: macos
+    cache: 
+      - VulkanSDK.tar.gz
+    install:
+    - sh: git submodule sync && git submodule update --init --recursive
+    - sh: curl -L --silent --show-error --output VulkanSDK.tar.gz https://vulkan.lunarg.com/sdk/download/1.1.114.0/mac/vulkansdk-macos-1.1.114.0.tar.gz?Human=true
+    - sh: tar -xzf VulkanSDK.tar.gz
+    - sh: cd vulkansdk-macos-1.1.114.0/ && ./install_vulkan.py --force-install && cd ..
+    build_script:
+    - sh: mkdir -p include/framerat && cmake CMakeLists.txt && make -j2
+    after_build:
+    - sh: mkdir libs && mv framerat/libframerat.a libs/ && rm -rfv examples/ && mkdir examples && mkdir examples/res && cp -r res/* examples/res && cp -r bin/* examples/ && cp -r lib/*.dylib examples/ && cp -r lib/*.dylib libs/ && zip -r framerat-macos-rolling.zip libs/ include/ examples/
+    artifacts:
+      - path: framerat-macos-rolling.zip
+        name: libframerat-macos
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2019
+    environment:
+      VULKAN_SDK: C:/VulkanSDK/1.1.114.0
+    cache:
+      - VulkanSDK.exe
+    install:
+      - if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://vulkan.lunarg.com/sdk/download/1.1.114.0/windows/VulkanSDK-1.1.114.0-Installer.exe?Human=true
+      - VulkanSDK.exe /S
+      - git submodule update --init --recursive
+    before_build:
+      - ps: .\get_build_artefacts_appveyor.ps1
+      - cmake -G "Visual Studio 16 2019" -S . -B build/
+    build:
+      project: build/FRAMERAT_EXAMPLES.sln
+      parallel: true
+    after_build:
+      - mkdir C:\projects\framerat\libs
+      - move C:\projects\framerat\build\framerat\Release\framerat.lib C:\projects\framerat\libs
+      - rmdir /s /q C:\projects\framerat\examples 
+      - if not exist C:\projects\framerat\examples mkdir C:\projects\framerat\examples 
+      - xcopy /e /v C:\projects\framerat\res C:\projects\framerat\examples\res\ 
+      - copy C:\projects\framerat\build\external\glfw\src\Release\glfw3.dll C:\projects\framerat\examples\
+      - xcopy C:\projects\framerat\build\bin\Release C:\projects\framerat\examples\ 
+      - 7z a framerat-win-rolling-%APPVEYOR_BUILD_VERSION%.zip libs/ include/ examples/
+    artifacts:
+      - path: framerat-win-rolling-$(appveyor_build_version).zip
+        name: libframerat-win
+      - path: framerat-linux-rolling-$(appveyor_build_version).zip
+        name: libframerat-linux
+      - path: framerat-macos-rolling-$(appveyor_build_version).zip
+        name: libframerat-macos
+    deploy:
+      tag: r$(appveyor_build_version)
+      release: framerat-rolling-$(appveyor_build_version)
+      description: Rolling channel for releases of framerat compiled libraries --- $(APPVEYOR_REPO_COMMIT_MESSAGE)
+      provider: GitHub
+      auth_token:
+        secure: otHmBJW4rJT8ONsToA2oc13ybNJR1oktyFX8tHeoJ/97fX570JRnUbrG3ubRrbFi
+      artifact: libframerat-linux, libframerat-win, libframerat-macos
+      draft: false
+      prerelease: false
+      on:
+        branch: master
+  -
+    matrix:
+      only:
+        - image: Visual Studio 2017
+    environment:
+      VULKAN_SDK: C:/VulkanSDK/1.1.114.0
+    cache:
+      - VulkanSDK.exe
+    install:
+      - if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://vulkan.lunarg.com/sdk/download/1.1.114.0/windows/VulkanSDK-1.1.114.0-Installer.exe?Human=true
+      - VulkanSDK.exe /S
+      - git submodule update --init --recursive
+    before_build:
+      - cmake -G "Visual Studio 15 2017 Win64" .
+    build:
+      project: FRAMERAT_EXAMPLES.sln
+      parallel: true
+

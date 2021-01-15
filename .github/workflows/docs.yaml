@@ -1,0 +1,62 @@
+name: docs.framerat.tech CI 
+
+on:
+  push:
+    tags:
+      - 'r*'
+      - 'v*'
+
+env:
+  IMAGE_NAME: framerat-docs
+
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    name: Generating and deploying docs using doxygen and Docker
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Initialize submodules
+        run: git submodule sync && git submodule update --init --recursive
+      - name: Set environment variables
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
+      - name: Install doxygen
+        run: sudo apt-get update && sudo apt-get install doxygen
+      - name: Run doxygen
+        run: (cat Doxyfile; echo "PROJECT_NUMBER=${{ env.RELEASE_VERSION }}") | doxygen -
+      - name: Build image
+        run: docker build . --file Dockerfile --tag $IMAGE_NAME
+      - name: Log into GitHub Package Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
+      - name: Push image to GitHub Package Registry
+        run: |
+          IMAGE_ID=docker.pkg.github.com/${{ github.repository }}/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^[v|r]//')
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+      - name: Log into Docker Container Registry
+        run: echo "${{ secrets.DOCKER_TOKEN }}" | docker login -u d3psi --password-stdin
+      - name: Push image to Docker Container Registry
+        run: |
+          IMAGE_ID=d3psi/$IMAGE_NAME
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^[v|r]//')
+          [ "$VERSION" == "master" ] && VERSION=latest
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION
+      - name: Set SSH keys from secrets
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "${{ secrets.SSH_PUBLIC_KEY }}" > $HOME/.ssh/id_rsa.pub
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa.pub
+          chmod 700 $HOME/.ssh

@@ -1,0 +1,20 @@
+name: Linux C/C++ CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-18.04, ubuntu-latest ]
+    name: Compilation on ${{ matrix.os }} 
+    steps:
+     - name: Checkout code
+       uses: actions/checkout@master
+     - name: Install dependencies
+       run: bash install-framerat.sh --no-build
+     - name: Build
+       run: bash install-framerat.sh --ci
+
+    
