@@ -235,3 +235,4 @@ framerat/libframerat.a
 bin/
 docs/
 *.cbp
+*.swp
