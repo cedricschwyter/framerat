@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  Target.cpp
+ *       Filename:  RenderingTarget.cpp
  *    Description:  Defines an abstract object for where to render to
  *
  *        Version:  1.0
@@ -13,6 +13,6 @@
  *
  * =====================================================================================
  */
-#include "Target.hpp"
+#include "RenderingTarget.hpp"
 
 namespace framerat::core::rendering {}
