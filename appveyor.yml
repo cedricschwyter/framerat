@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 0.0.{build}
 image:
 - Ubuntu
 - macos
@@ -30,18 +30,18 @@ for:
     - sh: sudo apt-get update -y && sudo apt-get -y install git cmake make libncurses5-dev libncursesw5-dev gcc-8 g++-8 libxinerama-dev libxcursor-dev libxrandr-dev libx11-dev libxi-dev libegl1-mesa-dev && export CC=gcc-8 && export CXX=g++-8 && git submodule sync && git submodule update --init --recursive
     build_script:
     - sh: mkdir -p include/framerat && cmake CMakeLists.txt && make -j2
-  
+
   -
     matrix:
       only:
         - image: macos
-    cache: 
-      - VulkanSDK.tar.gz
+    cache:
+      - vulkan-sdk.dmg
     install:
     - sh: git submodule sync && git submodule update --init --recursive
-    - sh: curl -L --silent --show-error --output VulkanSDK.tar.gz https://vulkan.lunarg.com/sdk/download/1.1.114.0/mac/vulkansdk-macos-1.1.114.0.tar.gz?Human=true
-    - sh: tar -xzf VulkanSDK.tar.gz
-    - sh: cd vulkansdk-macos-1.1.114.0/ && ./install_vulkan.py --force-install && cd ..
+    - sh: curl -L --silent --show-error --output vulkan-sdk.dmg https://sdk.lunarg.com/sdk/download/latest/mac/vulkan-sdk.dmg?u=
+    - sh: hdiutil attach vulkan-sdk.dmg
+    - sh: PREV=$(pwd) && cd /Volumes && cd vulkansdk-macos-* && ./install_vulkan.py --force-install && cd $PREV
     build_script:
     - sh: mkdir -p include/framerat && cmake CMakeLists.txt && make -j2
     after_build:
@@ -53,12 +53,10 @@ for:
     matrix:
       only:
         - image: Visual Studio 2019
-    environment:
-      VULKAN_SDK: C:/VulkanSDK/1.1.114.0
     cache:
       - VulkanSDK.exe
     install:
-      - if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://vulkan.lunarg.com/sdk/download/1.1.114.0/windows/VulkanSDK-1.1.114.0-Installer.exe?Human=true
+      - if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-sdk.exe?u=
       - VulkanSDK.exe /S
       - git submodule update --init --recursive
     before_build:
@@ -70,11 +68,11 @@ for:
     after_build:
       - mkdir C:\projects\framerat\libs
       - move C:\projects\framerat\build\framerat\Release\framerat.lib C:\projects\framerat\libs
-      - rmdir /s /q C:\projects\framerat\examples 
-      - if not exist C:\projects\framerat\examples mkdir C:\projects\framerat\examples 
-      - xcopy /e /v C:\projects\framerat\res C:\projects\framerat\examples\res\ 
+      - rmdir /s /q C:\projects\framerat\examples
+      - if not exist C:\projects\framerat\examples mkdir C:\projects\framerat\examples
+      - xcopy /e /v C:\projects\framerat\res C:\projects\framerat\examples\res\
       - copy C:\projects\framerat\build\external\glfw\src\Release\glfw3.dll C:\projects\framerat\examples\
-      - xcopy C:\projects\framerat\build\bin\Release C:\projects\framerat\examples\ 
+      - xcopy C:\projects\framerat\build\bin\Release C:\projects\framerat\examples\
       - 7z a framerat-win-rolling-%APPVEYOR_BUILD_VERSION%.zip libs/ include/ examples/
     artifacts:
       - path: framerat-win-rolling-$(appveyor_build_version).zip
@@ -99,12 +97,10 @@ for:
     matrix:
       only:
         - image: Visual Studio 2017
-    environment:
-      VULKAN_SDK: C:/VulkanSDK/1.1.114.0
     cache:
       - VulkanSDK.exe
     install:
-      - if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://vulkan.lunarg.com/sdk/download/1.1.114.0/windows/VulkanSDK-1.1.114.0-Installer.exe?Human=true
+      - if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-sdk.exe?u=
       - VulkanSDK.exe /S
       - git submodule update --init --recursive
     before_build:
@@ -112,4 +108,3 @@ for:
     build:
       project: FRAMERAT_EXAMPLES.sln
       parallel: true
-

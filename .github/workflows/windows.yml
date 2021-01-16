@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ windows-2019, windows-latest ]
-    name: Compilation on ${{ matrix.os }} 
+    name: Compilation on ${{ matrix.os }}
     steps:
      - name: Checkout code
        uses: actions/checkout@master
@@ -19,10 +19,10 @@ jobs:
        with:
          path: VulkanSDK.exe
          key: ${{ env.cache-name }}
-     - name: Setup MSBuild.exe
-       uses: warrenbuckley/Setup-MSBuild@v1
+     - name: Add msbuild to PATH
+       uses: microsoft/setup-msbuild@v1.0.2
      - name: Download VulkanSDK
-       run: if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://vulkan.lunarg.com/sdk/download/1.1.114.0/windows/VulkanSDK-1.1.114.0-Installer.exe?Human=true
+       run: if not exist VulkanSDK.exe curl -L --silent --show-error --output VulkanSDK.exe https://sdk.lunarg.com/sdk/download/latest/windows/vulkan-sdk.exe?u=
        shell: cmd
      - name: Install VulkanSDK
        run: VulkanSDK.exe /S

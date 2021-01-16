@@ -1,0 +1,6 @@
+#ifndef __FRAMERAT_CORE_RENDERING_CONTEXT_HPP
+#define __FRAMERAT_CORE_RENDERING_CONTEXT_HPP
+
+namespace framerat::core::rendering {}
+
+#endif // __FRAMERAT_CORE_RENDERING_CONTEXT_CONTEXT_HPP
