@@ -16,8 +16,8 @@
 #ifndef __FRAMERAT_CORE_RENDERING_RENDERING_HPP
 #define __FRAMERAT_CORE_RENDERING_RENDERING_HPP
 
-#include "Context.hpp"
-#include "Target.hpp"
+#include "RenderingContext.hpp"
+#include "RenderingTarget.hpp"
 #include "enums/Enums.hpp"
 
 namespace framerat::core::rendering {}
