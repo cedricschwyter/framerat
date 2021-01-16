@@ -17,6 +17,8 @@
 #ifndef __FRAMERAT_CORE_RENDERING_ENUMS_RENDERINGMODE_HPP
 #define __FRAMERAT_CORE_RENDERING_ENUMS_RENDERINGMODE_HPP
 
-typedef enum RenderingMode { DETACHED, SINGULAR, SYNCHRONIZED, HEADLESS } RenderingMode;
+namespace framerat::core::rendering::enums {
+    typedef enum RenderingMode { DETACHED, SINGULAR, SYNCHRONIZED, HEADLESS } RenderingMode;
+}
 
 #endif // __FRAMERAT_CORE_RENDERING_ENUMS_RENDERINGMODE_HPP
