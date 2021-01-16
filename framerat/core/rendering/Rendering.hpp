@@ -18,6 +18,7 @@
 
 #include "Context.hpp"
 #include "Target.hpp"
+#include "enums/Enums.hpp"
 
 namespace framerat::core::rendering {}
 
