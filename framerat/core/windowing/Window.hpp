@@ -18,10 +18,13 @@
 #define __FRAMERAT_CORE_WINDOWING_WINDOW_HPP
 
 #include "../rendering/RenderingTarget.hpp"
-#include "factory/WindowFactory.hpp"
 #include <memory>
 #include <stdint.h>
 #include <string>
+
+namespace framerat::core::windowing::factory {
+    class WindowFactory;
+}
 
 using namespace framerat::core::rendering;
 using namespace framerat::core::windowing::factory;
@@ -30,12 +33,12 @@ namespace framerat::core::windowing {
     class Window : public RenderingTarget {
       public:
         Window(void) = delete;
-        Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width = 1280, uint32_t height = 720,
-               const std::string& _title = "Framerat by D3PSI",
-               const std::string& _icon = "res/logo/framerat-logo-small.png", uint32_t _framerate = 60);
+        explicit Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width = 1280, uint32_t height = 720,
+                        const std::string& _title = "Framerat by D3PSI",
+                        const std::string& _icon = "res/logo/framerat-logo-small.png", uint32_t _framerate = 60);
         ~Window(void) = default;
 
-        void draw(void);
+        void draw(void) override;
 
       private:
         std::shared_ptr<WindowFactory> m_factory;

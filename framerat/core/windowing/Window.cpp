@@ -15,6 +15,7 @@
  * =====================================================================================
  */
 #include "Window.hpp"
+#include "factory/WindowFactory.hpp"
 
 namespace framerat::core::windowing {
     Window::Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width, uint32_t _height,
