@@ -2,6 +2,7 @@
  * =====================================================================================
  *
  *       Filename:  RenderingTarget.hpp
+ *
  *    Description:  Defines an abstract object for where to render to
  *
  *        Version:  1.0

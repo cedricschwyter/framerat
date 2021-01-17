@@ -17,14 +17,28 @@
 #ifndef __FRAMERAT_CORE_WINDOWING_FACTORY_WINDOWFACTORY_HPP
 #define __FRAMERAT_CORE_WINDOWING_FACTORY_WINDOWFACTORY_HPP
 
+#include <memory>
+#include <vector>
+
+namespace framerat::core::windowing {
+    class Window;
+}
+
+using namespace framerat::core::windowing;
+
 namespace framerat::core::windowing::factory {
     class WindowFactory {
       public:
         WindowFactory(void) = default;
         ~WindowFactory(void) = default;
 
+        virtual std::shared_ptr<Window> create(void) = 0;
+
         virtual void init(void) = 0;
         virtual void draw(void) = 0;
+
+      private:
+        std::vector<std::shared_ptr<Window>> s_windows;
     };
 } // namespace framerat::core::windowing::factory
 
