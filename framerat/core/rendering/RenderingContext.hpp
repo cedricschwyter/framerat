@@ -19,6 +19,7 @@
 #include "RenderingTarget.hpp"
 #include "enums/RenderingBackend.hpp"
 #include "enums/RenderingMode.hpp"
+#include <atomic>
 #include <functional>
 #include <future>
 #include <memory>
@@ -50,14 +51,20 @@ namespace framerat::core::rendering {
         std::shared_future<void> submit(std::packaged_task<void()> _task);
         void submitSynchronously(std::packaged_task<void()> _task);
 
+        // TODO: Add virtual member factory functions without implementation to allocate graphics resources and
+        // implement them in the child classes
+
       private:
         RenderingBackend m_renderingBackend;
         std::shared_ptr<RenderingTarget> m_renderingTarget;
         RenderingMode m_renderingMode;
         std::function<void()> m_renderCallback;
         std::future<void> m_thread;
+        std::atomic<bool> m_close = false;
 
         void main(void);
+        virtual void init(void) = 0;
+        virtual void term(void) = 0;
     };
 } // namespace framerat::core::rendering
 

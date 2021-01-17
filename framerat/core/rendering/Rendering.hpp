@@ -19,6 +19,8 @@
 #include "RenderingContext.hpp"
 #include "RenderingTarget.hpp"
 #include "enums/Enums.hpp"
+#include "opengl/OpenGL.hpp"
+#include "vulkan/Vulkan.hpp"
 
 namespace framerat::core::rendering {}
 

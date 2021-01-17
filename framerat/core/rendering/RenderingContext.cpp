@@ -23,7 +23,15 @@ namespace framerat::core::rendering {
         m_thread = std::async(std::launch::async, &RenderingContext::main, this);
     }
 
-    void RenderingContext::main() {}
+    void RenderingContext::main() {
+        init();
+        while (!m_close.load()) {
+            // TODO: Add timing and synchronization logic according to m_renderingMode here
+            m_renderCallback();
+            // TODO: Add logic to check for open tasks and execute them here
+        }
+        term();
+    }
 
     RenderingBackend RenderingContext::getRenderingBackend() { return m_renderingBackend; }
 
