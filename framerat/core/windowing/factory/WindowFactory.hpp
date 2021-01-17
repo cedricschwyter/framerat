@@ -17,6 +17,15 @@
 #ifndef __FRAMERAT_CORE_WINDOWING_FACTORY_WINDOWFACTORY_HPP
 #define __FRAMERAT_CORE_WINDOWING_FACTORY_WINDOWFACTORY_HPP
 
-namespace framerat::core::windowing::factory {}
+namespace framerat::core::windowing::factory {
+    class WindowFactory {
+      public:
+        WindowFactory(void) = default;
+        ~WindowFactory(void) = default;
+
+        virtual void init(void) = 0;
+        virtual void draw(void) = 0;
+    };
+} // namespace framerat::core::windowing::factory
 
 #endif // __FRAMERAT_CORE_WINDOWING_FACTORY_WINDOWFACTORY_HPP
