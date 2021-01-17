@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  Context.cpp
+ *       Filename:  OpenGLRenderingContext.cpp
  *
- *    Description:  Defines the core abstraction object for the graphics card
+ *    Description:  Defines core OpenGlRenderingContext
  *
  *        Version:  1.0
- *        Created:  01/16/21 14:53:43
+ *        Created:  01/17/21 14:59:21
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -14,6 +14,6 @@
  *
  * =====================================================================================
  */
-#include "Context.hpp"
+#include "OpenGLRenderingContext.hpp"
 
-namespace framerat::core::rendering::context {}
+namespace framerat::core::rendering::opengl {}

@@ -1,7 +1,7 @@
 /*
  * =====================================================================================
  *
- *       Filename:  Target.hpp
+ *       Filename:  RenderingTarget.hpp
  *    Description:  Defines an abstract object for where to render to
  *
  *        Version:  1.0
@@ -13,12 +13,14 @@
  *
  * =====================================================================================
  */
-#ifndef __FRAMERAT_CORE_RENDERING_TARGET_HPP
-#define __FRAMERAT_CORE_RENDERING_TARGET_HPP
+#ifndef __FRAMERAT_CORE_RENDERING_RENDERINGTARGET_HPP
+#define __FRAMERAT_CORE_RENDERING_RENDERINGTARGET_HPP
 
 namespace framerat::core::rendering {
-    class Target {
+    class RenderingTarget {
       public:
+        RenderingTarget(void) = default;
+        ~RenderingTarget(void) = default;
         virtual void draw(void) = 0;
     };
 } // namespace framerat::core::rendering
