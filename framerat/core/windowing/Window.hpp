@@ -30,7 +30,7 @@ using namespace framerat::core::rendering;
 using namespace framerat::core::windowing::factory;
 
 namespace framerat::core::windowing {
-    class Window : public RenderingTarget {
+    class Window : public RenderingTarget, std::enable_shared_from_this<Window> {
       public:
         Window(void) = delete;
         explicit Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width = 1280, uint32_t height = 720,

@@ -25,6 +25,6 @@ namespace framerat::core::windowing {
         m_factory->init();
     }
 
-    void Window::draw() { m_factory->draw(); }
+    void Window::draw() { m_factory->draw(shared_from_this()); }
 
 } // namespace framerat::core::windowing

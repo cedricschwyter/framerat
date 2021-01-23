@@ -35,10 +35,10 @@ namespace framerat::core::windowing::factory {
         virtual std::shared_ptr<Window> create(void) = 0;
 
         virtual void init(void) = 0;
-        virtual void draw(void) = 0;
+        virtual void draw(std::shared_ptr<Window> _window) = 0;
 
       private:
-        std::vector<std::shared_ptr<Window>> s_windows;
+        std::vector<std::shared_ptr<Window>> m_windows;
     };
 } // namespace framerat::core::windowing::factory
 
