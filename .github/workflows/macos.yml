@@ -7,8 +7,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ macos-10.15, macos-latest ]
-    name: Compilation on ${{ matrix.os }} 
+        os: [ macos-11.0, macos-10.15, macos-latest ]
+    name: Compilation on ${{ matrix.os }}
     steps:
      - name: Checkout code
        uses: actions/checkout@master
@@ -17,13 +17,13 @@ jobs:
        env:
          cache-name: cache-vk-sdk-macos
        with:
-         path: VulkanSDK.tar.gz
+         path: vulkan-sdk.dmg
          key: ${{ env.cache-name }}
      - name: Install dependencies
        run: |
          bash install-framerat.sh --no-build
-         [[ ! -f "VulkanSDK.tar.gz" ]] && curl -L --silent --show-error --output VulkanSDK.tar.gz https://vulkan.lunarg.com/sdk/download/1.1.114.0/mac/vulkansdk-macos-1.1.114.0.tar.gz?Human=true
-         tar -xzf VulkanSDK.tar.gz
-         cd vulkansdk-macos-1.1.114.0/ && ./install_vulkan.py --force-install && cd ..
+         [[ ! -f "vulkan-sdk.dmg" ]] && curl -L --silent --show-error --output vulkan-sdk.dmg https://sdk.lunarg.com/sdk/download/latest/mac/vulkan-sdk.dmg?u=
+         hdiutil attach vulkan-sdk.dmg
+         cd /Volumes && cd vulkansdk-macos-* && ./install_vulkan.py --force-install && cd ..
      - name: Build
        run: bash install-framerat.sh --ci
