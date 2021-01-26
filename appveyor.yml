@@ -75,11 +75,11 @@ for:
       - xcopy C:\projects\framerat\build\bin\Release C:\projects\framerat\examples\
       - 7z a framerat-win-rolling-%APPVEYOR_REPO_TAG_NAME%.zip libs/ include/ examples/
     artifacts:
-      - path: framerat-win-rolling-$(APPVEYOR_REPO_TAG_NAME).zip
+      - path: framerat-win-rolling-$(appveyor_repo_tag_name).zip
         name: libframerat-win
-      - path: framerat-linux-rolling-$(APPVEYOR_REPO_TAG_NAME).zip
+      - path: framerat-linux-rolling-$(appveyor_repo_tag_name).zip
         name: libframerat-linux
-      - path: framerat-macos-rolling-$(APPVEYOR_REPO_TAG_NAME).zip
+      - path: framerat-macos-rolling-$(appveyor_repo_tag_name).zip
         name: libframerat-macos
     deploy:
       tag: $(APPVEYOR_REPO_TAG_NAME)
