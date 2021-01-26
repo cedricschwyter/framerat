@@ -83,8 +83,8 @@ for:
         name: libframerat-macos
     deploy:
       tag: $(APPVEYOR_REPO_TAG_NAME)
-      release: framerat-rolling-$(APPVEYOR_REPO_TAG_NAME)
-      description: Rolling channel for releases of framerat compiled libraries --- $(APPVEYOR_REPO_COMMIT_MESSAGE)
+      release: $(APPVEYOR_REPO_TAG_NAME)
+      description: Rolling channel for releases of framerat compiled libraries --- $(APPVEYOR_REPO_TAG_NAME)
       provider: GitHub
       auth_token:
         secure: otHmBJW4rJT8ONsToA2oc13ybNJR1oktyFX8tHeoJ/97fX570JRnUbrG3ubRrbFi
