@@ -10,7 +10,7 @@ $project = Invoke-RestMethod -Method Get -Uri "$apiUrl/projects/$accountName/$pr
 $jobId = $project.build.jobs[0].jobId
 $artifacts = Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts" -Headers $headers
 $artifactFileName = $artifacts[0].fileName
-$version_appveyor = $env:APPVEYOR_BUILD_VERSION
+$version_appveyor = $env:APPVEYOR_REPO_TAG_NAME
 $localArtifactPath = "$downloadLocation\framerat-linux-rolling-$version_appveyor.zip"
 Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts/$artifactFileName" `
 -OutFile $localArtifactPath -Headers @{ "Authorization" = "Bearer $token" }
@@ -18,7 +18,6 @@ Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts/$artifact
 $jobId = $project.build.jobs[1].jobId
 $artifacts = Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts" -Headers $headers
 $artifactFileName = $artifacts[0].fileName
-$version_appveyor = $env:APPVEYOR_BUILD_VERSION
 $localArtifactPath = "$downloadLocation\framerat-macos-rolling-$version_appveyor.zip"
 Invoke-RestMethod -Method Get -Uri "$apiUrl/buildjobs/$jobId/artifacts/$artifactFileName" `
 -OutFile $localArtifactPath -Headers @{ "Authorization" = "Bearer $token" }

@@ -60,7 +60,7 @@ for:
       - VulkanSDK.exe /S
       - git submodule update --init --recursive
     before_build:
-      - ps: .\get_build_artefacts_appveyor.ps1
+      - ps: .\scripts\get_build_artefacts_appveyor.ps1
       - cmake -G "Visual Studio 16 2019" -S . -B build/
     build:
       project: build/FRAMERAT_EXAMPLES.sln
@@ -73,13 +73,13 @@ for:
       - xcopy /e /v C:\projects\framerat\res C:\projects\framerat\examples\res\
       - copy C:\projects\framerat\build\external\glfw\src\Release\glfw3.dll C:\projects\framerat\examples\
       - xcopy C:\projects\framerat\build\bin\Release C:\projects\framerat\examples\
-      - 7z a framerat-win-rolling-%APPVEYOR_BUILD_VERSION%.zip libs/ include/ examples/
+      - 7z a framerat-win-rolling-%APPVEYOR_REPO_TAG_NAME%.zip libs/ include/ examples/
     artifacts:
-      - path: framerat-win-rolling-$(appveyor_build_version).zip
+      - path: framerat-win-rolling-$(APPVEYOR_REPO_TAG_NAME).zip
         name: libframerat-win
-      - path: framerat-linux-rolling-$(appveyor_build_version).zip
+      - path: framerat-linux-rolling-$(APPVEYOR_REPO_TAG_NAME).zip
         name: libframerat-linux
-      - path: framerat-macos-rolling-$(appveyor_build_version).zip
+      - path: framerat-macos-rolling-$(APPVEYOR_REPO_TAG_NAME).zip
         name: libframerat-macos
     deploy:
       tag: $(APPVEYOR_REPO_TAG_NAME)
