@@ -7,7 +7,7 @@ image:
 - Visual Studio 2017
 platform: x64
 configuration: Release
-skip_tags: true
+
 for:
   -
     matrix:
@@ -82,8 +82,8 @@ for:
       - path: framerat-macos-rolling-$(appveyor_build_version).zip
         name: libframerat-macos
     deploy:
-      tag: r$(appveyor_build_version)
-      release: framerat-rolling-$(appveyor_build_version)
+      tag: $(APPVEYOR_REPO_TAG_NAME)
+      release: framerat-rolling-$(APPVEYOR_REPO_TAG_NAME)
       description: Rolling channel for releases of framerat compiled libraries --- $(APPVEYOR_REPO_COMMIT_MESSAGE)
       provider: GitHub
       auth_token:
@@ -92,7 +92,7 @@ for:
       draft: false
       prerelease: false
       on:
-        branch: master
+        APPVEYOR_REPO_TAG: true
   -
     matrix:
       only:
