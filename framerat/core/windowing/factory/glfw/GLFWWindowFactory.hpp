@@ -25,23 +25,27 @@
 using namespace framerat::core::windowing::factory;
 
 namespace framerat::core::windowing::factory::glfw {
-    class GLFWWindowFactory : public WindowFactory, std::enable_shared_from_this<GLFWWindowFactory> {
+    class GLFWWindowFactory : public WindowFactory, public std::enable_shared_from_this<GLFWWindowFactory> {
       public:
-        GLFWWindowFactory(void);
+        static std::shared_ptr<GLFWWindowFactory> create(void);
+
         ~GLFWWindowFactory(void);
 
-        std::shared_ptr<Window> create(void);
-        void submit(std::packaged_task<void()> _task);
-        std::shared_future<void> submitSynchronously(std::packaged_task<void()> _task);
+        std::shared_ptr<Window> spawn(void);
+        std::shared_future<void> submit(std::packaged_task<void()> _task);
 
         void init(void);
         void draw(std::shared_ptr<Window> _window);
+        void shutdown(void);
 
       private:
         std::future<void> m_thread;
         std::vector<std::shared_ptr<GLFWwindow>> m_glfwWindows;
-        std::queue<std::packaged_task<void()>> m_tasks;
+        std::queue<std::packaged_task<void()>*> m_tasks;
         std::atomic<bool> m_initializing = true;
+        std::atomic<bool> m_glfwInitializing = true;
+
+        GLFWWindowFactory(void);
 
         void defaultWindowHints(void);
         void loop(void);

@@ -8,7 +8,8 @@ using namespace framerat::core::windowing::factory;
 using namespace framerat::core::windowing::factory::glfw;
 
 int main() {
-    std::shared_ptr<GLFWWindowFactory> windowFactory(new GLFWWindowFactory());
-    std::shared_ptr<Window> window = windowFactory->create();
+    std::shared_ptr<GLFWWindowFactory> windowFactory = GLFWWindowFactory::create();
+    std::shared_ptr<Window> window = windowFactory->spawn();
+    windowFactory->shutdown();
     return 0;
 }

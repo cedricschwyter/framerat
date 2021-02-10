@@ -32,10 +32,11 @@ namespace framerat::core::windowing::factory {
         WindowFactory(void) = default;
         virtual ~WindowFactory(void) = default;
 
-        virtual std::shared_ptr<Window> create(void) = 0;
+        virtual std::shared_ptr<Window> spawn(void) = 0;
 
         virtual void init(void) = 0;
         virtual void draw(std::shared_ptr<Window> _window) = 0;
+        virtual void shutdown(void) = 0;
 
       protected:
         std::vector<std::shared_ptr<Window>> m_windows;
