@@ -236,3 +236,5 @@ bin/
 docs/
 *.cbp
 *.swp
+tags
+ctags
