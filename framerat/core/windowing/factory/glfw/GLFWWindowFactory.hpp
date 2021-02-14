@@ -31,7 +31,11 @@ namespace framerat::core::windowing::factory::glfw {
 
         ~GLFWWindowFactory(void);
 
-        std::shared_ptr<Window> spawn(void);
+        std::shared_ptr<Window> spawn(uint32_t _width = 1280, uint32_t _height = 720,
+                                      const std::string& _title = "Framerat by D3PSI",
+                                      const std::string& _icon = "res/logo/framerat-logo-small.png",
+                                      uint32_t _framerate = 60);
+        void close(std::shared_ptr<Window> _window);
         std::shared_future<void> submit(std::packaged_task<void()> _task);
 
         void init(void);
@@ -48,6 +52,7 @@ namespace framerat::core::windowing::factory::glfw {
         GLFWWindowFactory(void);
 
         void defaultWindowHints(void);
+        void setCallbacks(void);
         void loop(void);
     };
 } // namespace framerat::core::windowing::factory::glfw

@@ -36,29 +36,31 @@ namespace framerat::core::windowing::factory::glfw {
     void GLFWWindowFactory::init() {
         glfwInit();
         defaultWindowHints();
+        setCallbacks();
         loop();
         glfwTerminate();
     }
 
     void GLFWWindowFactory::draw(std::shared_ptr<Window> _window) {}
 
-    std::shared_ptr<Window> GLFWWindowFactory::spawn() {
+    std::shared_ptr<Window> GLFWWindowFactory::spawn(uint32_t _width, uint32_t _height, const std::string& _title,
+                                                     const std::string& _icon, uint32_t _framerate) {
         std::shared_ptr<Window> window;
-        std::shared_future<void> fut = submit(std::packaged_task<void()>([=]() mutable -> void {
+        submit(std::packaged_task<void()>([=, window = std::move(window)]() mutable -> void {
+            // TODO: Load icon here
             std::shared_ptr<GLFWwindow> glfwWindow = std::shared_ptr<GLFWwindow>(
-                glfwCreateWindow(1280, 720, "Framerat by D3PSI", nullptr, nullptr),
-                GLFWWindowDeleter()); // TODO: Make all these values function parameters of this factory
-                                      // method and set them in the newly created Window object
+                glfwCreateWindow(_width, _height, _title.c_str(), nullptr, nullptr), GLFWWindowDeleter());
             m_glfwWindows.push_back(glfwWindow);
             if (m_initializing.load()) {
                 m_initializing = false;
             }
-            window = Window::create(shared_from_this(), 1280, 720, "Framerat by D3PSI");
+            window = Window::create(shared_from_this(), _width, _height, _title, _icon, _framerate);
             m_windows.push_back(window);
-        }));
-        fut.get();
+        })).get();
         return window;
     }
+
+    void GLFWWindowFactory::close(std::shared_ptr<Window> _window) {}
 
     std::shared_future<void> GLFWWindowFactory::submit(std::packaged_task<void()> _task) {
         while (m_glfwInitializing.load()) {
@@ -79,6 +81,8 @@ namespace framerat::core::windowing::factory::glfw {
 #endif // __APPLE__
     }
 
+    void GLFWWindowFactory::setCallbacks() {}
+
     void GLFWWindowFactory::loop() {
         m_glfwInitializing = false;
         while (!m_glfwWindows.empty() || m_initializing.load()) {
@@ -87,7 +91,12 @@ namespace framerat::core::windowing::factory::glfw {
                 m_tasks.pop();
                 task();
             }
+            glfwPollEvents();
+            for (std::shared_ptr<Window> win : m_windows) {
+            }
             for (std::shared_ptr<GLFWwindow> win : m_glfwWindows) {
+                if (glfwWindowShouldClose(win.get())) {
+                }
                 glfwSwapBuffers(win.get());
             }
         }

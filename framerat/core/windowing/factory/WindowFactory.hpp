@@ -18,6 +18,7 @@
 #define __FRAMERAT_CORE_WINDOWING_FACTORY_WINDOWFACTORY_HPP
 
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace framerat::core::windowing {
@@ -32,7 +33,9 @@ namespace framerat::core::windowing::factory {
         WindowFactory(void) = default;
         virtual ~WindowFactory(void) = default;
 
-        virtual std::shared_ptr<Window> spawn(void) = 0;
+        virtual std::shared_ptr<Window> spawn(uint32_t _width, uint32_t _height, const std::string& _title,
+                                              const std::string& _icon, uint32_t _framerate) = 0;
+        virtual void close(std::shared_ptr<Window> _window) = 0;
 
         virtual void init(void) = 0;
         virtual void draw(std::shared_ptr<Window> _window) = 0;
