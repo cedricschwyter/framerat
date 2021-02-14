@@ -18,13 +18,17 @@
 #include "factory/WindowFactory.hpp"
 
 namespace framerat::core::windowing {
+
+    std::shared_ptr<Window> Window::create(std::shared_ptr<WindowFactory> _factory, uint32_t _width, uint32_t _height,
+                                           const std::string& _title, const std::string& _icon, uint32_t _framerate) {
+        return std::shared_ptr<Window>(new Window(_factory, _width, _height, _title, _icon, _framerate));
+    }
+
     Window::Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width, uint32_t _height,
                    const std::string& _title, const std::string& _icon, uint32_t _framerate)
         : RenderingTarget(), m_factory(_factory), m_width(_width), m_height(_height), m_title(_title), m_icon(_icon),
-          m_framerate(_framerate) {
-        m_factory->init();
-    }
+          m_framerate(_framerate) {}
 
-    void Window::draw() { m_factory->draw(); }
+    void Window::draw() { m_factory->draw(shared_from_this()); }
 
 } // namespace framerat::core::windowing

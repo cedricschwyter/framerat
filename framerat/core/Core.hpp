@@ -17,6 +17,7 @@
 #define __FRAMERAT_CORE_CORE_HPP
 
 #include "rendering/Rendering.hpp"
+#include "windowing/Windowing.hpp"
 
 namespace framerat::core {}
 

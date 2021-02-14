@@ -30,12 +30,14 @@ using namespace framerat::core::rendering;
 using namespace framerat::core::windowing::factory;
 
 namespace framerat::core::windowing {
-    class Window : public RenderingTarget {
+    class Window : public RenderingTarget, std::enable_shared_from_this<Window> {
       public:
+        static std::shared_ptr<Window> create(std::shared_ptr<WindowFactory> _factory, uint32_t _width = 1280,
+                                              uint32_t _height = 720, const std::string& _title = "Framerat by D3PSI",
+                                              const std::string& _icon = "res/logo/framerat-logo-small.png",
+                                              uint32_t _framerate = 60);
+
         Window(void) = delete;
-        explicit Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width = 1280, uint32_t height = 720,
-                        const std::string& _title = "Framerat by D3PSI",
-                        const std::string& _icon = "res/logo/framerat-logo-small.png", uint32_t _framerate = 60);
         ~Window(void) = default;
 
         void draw(void) override;
@@ -47,6 +49,9 @@ namespace framerat::core::windowing {
         std::string m_title;
         std::string m_icon;
         uint32_t m_framerate;
+
+        explicit Window(std::shared_ptr<WindowFactory> _factory, uint32_t _width, uint32_t _height,
+                        const std::string& _title, const std::string& _icon, uint32_t _framerate);
     };
 } // namespace framerat::core::windowing
 
