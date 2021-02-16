@@ -18,6 +18,7 @@
 #define __FRAMERAT_CORE_WINDOWING_WINDOWING_HPP
 
 #include "Window.hpp"
+#include "events/Events.hpp"
 #include "factory/Factory.hpp"
 
 namespace framerat::core::windowing {}
