@@ -19,6 +19,7 @@
 
 #include "dispatcher/Dispatcher.hpp"
 #include "enums/Enums.hpp"
+#include "listener/Listener.hpp"
 
 namespace framerat::core::windowing::events {}
 
