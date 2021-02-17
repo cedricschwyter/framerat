@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  Threading.hpp
+ *       Filename:  ThreadpoolExecutor.cpp
  *
- *    Description:  Defines threading utils
+ *    Description:  Defines a thread pool executor object
  *
  *        Version:  1.0
- *        Created:  17.02.2021 19:49:46
+ *        Created:  17.02.2021 20:58:05
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -14,13 +14,6 @@
  *
  * =====================================================================================
  */
-#ifndef __FRAMERAT_UTIL_THREADING_THREADING_HPP
-#define __FRAMERAT_UTIL_THREADING_THREADING_HPP
-
-#include "Threadpool.hpp"
 #include "ThreadpoolExecutor.hpp"
-#include "ThreadpoolExecutorService.hpp"
 
 namespace framerat::util::threading {}
-
-#endif // __FRAMERAT_UTIL_THREADING_THREADING_HPP
