@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/jjat3qng2arpmid2/branch/master?svg=true)](https://ci.appveyor.com/project/D3PSI/framerat/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/m796l33ml520yq7o/branch/master?svg=true)](https://ci.appveyor.com/project/D3PSI/framerat/branch/master)
 ![Windows C/C++ CI](https://github.com/D3PSI/framerat/workflows/Windows%20C/C++%20CI/badge.svg)
 ![Linux C/C++ CI](https://github.com/D3PSI/framerat/workflows/Linux%20C/C++%20CI/badge.svg)
 ![macOS C/C++ CI](https://github.com/D3PSI/framerat/workflows/macOS%20C/C++%20CI/badge.svg)
