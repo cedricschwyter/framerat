@@ -2,7 +2,7 @@
 ![Windows C/C++ CI](https://github.com/D3PSI/framerat/workflows/Windows%20C/C++%20CI/badge.svg)
 ![Linux C/C++ CI](https://github.com/D3PSI/framerat/workflows/Linux%20C/C++%20CI/badge.svg)
 ![macOS C/C++ CI](https://github.com/D3PSI/framerat/workflows/macOS%20C/C++%20CI/badge.svg)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/D3PSI/framerat/graphs/commit-activity)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-no-red.svg)](https://github.com/D3PSI/framerat/graphs/commit-activity)
 [![GitHub issues](https://img.shields.io/github/issues/D3PSI/framerat.svg)](https://github.com/D3PSI/framerat/issues/)
 [![GitHub issues-closed](https://img.shields.io/github/issues-closed/D3PSI/framerat.svg)](https://github.com/D3PSI/framerat/issues?q=is%3Aissue+is%3Aclosed)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/D3PSI/framerat/compare)
